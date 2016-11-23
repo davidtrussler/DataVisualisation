@@ -3,21 +3,22 @@ document.addEventListener('DOMContentLoaded', init, false);
 function init() {
   console.log('init!')
 
-  bindData();
+  drawData();
 }
 
 
-function bindData() {
-  console.log('bindData!');
+function drawData() {
+  console.log('drawData!');
 
   var dataset = [5, 10, 15, 20, 25];
 
   d3.select('body')
-    .selectAll('p')
+    .selectAll('div')
     .data(dataset)
     .enter()
-    .append('p')
-    .text(function(d) {
-      return d;
+    .append('div')
+    .attr('class', 'bar')
+    .style('height', function(d) {
+      return d + 'px';
     });
 }
