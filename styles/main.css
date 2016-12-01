@@ -1,6 +1,5 @@
-div.bar {
-  display: inline-block;
-  width: 20px;
-  height: 75px;
-  background-color: teal;
+circle {
+  fill: teal;
+  stroke: red;
+  stroke-width: 2px;
 }
