@@ -3,17 +3,28 @@ document.addEventListener('DOMContentLoaded', init, false);
 function init() {
   console.log('init!')
 
-  drawSVG();
+  drawScatterplot();
 }
 
 
-function drawSVG() {
-  console.log('drawSVG!');
+function drawScatterplot() {
+  console.log('drawScatterplot!');
 
-  var dataset = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
-  var w = 500;
-  var h = 100;
-  var barPadding = 1;
+  var dataset = [
+    [17, 50],
+    [100, 90],
+    [215, 80],
+    [320, 33],
+    [25, 93],
+    [230, 42],
+    [435, 44],
+    [140, 67],
+    [45, 31],
+    [350, 88]
+  ];
+
+  var w = 550;
+  var h = 140;
   var svg = d3
               .select('body')
               .append('svg')
@@ -21,23 +32,17 @@ function drawSVG() {
               .attr('height', h);
 
   svg
-    .selectAll('rect')
+    .selectAll('circle')
     .data(dataset)
     .enter()
-    .append('rect')
-    .attr('x', function(d, i) {
-      return i * (w / dataset.length);
+    .append('circle')
+    .attr('cx', function(d) {
+      return d[0];
     })
-    .attr('y', function(d) {
-      return h - d;
+    .attr('cy', function(d) {
+      return d[1]
     })
-    .attr('width', w / dataset.length - barPadding)
-    .attr('height', function(d) {
-      return d;
-    })
-    .attr('fill', function(d) {
-      return "rgb(0, 0, " + d * 5 + ")";
-    });
+    .attr('r', 5);
 
   svg
     .selectAll('text')
@@ -45,15 +50,15 @@ function drawSVG() {
     .enter()
     .append('text')
     .text(function(d) {
-      return d;
+      return d[0] + ', ' + d[1];
     })
-    .attr('x', function(d, i) {
-      return (i * (w / dataset.length)) + ((w / dataset.length - barPadding) / 2);
+    .attr('x', function(d) {
+      return d[0];
     })
     .attr('y', function(d) {
-      return h - d - 5;
+      return d[1] - 10;
     })
     .attr('text-anchor', 'middle')
     .attr('font-family', 'sans-serif')
-    .attr('font-size', '1em');
+    .attr('font-size', '0.75em');
 }
