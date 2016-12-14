@@ -3,12 +3,17 @@ document.addEventListener('DOMContentLoaded', init, false);
 function init() {
   console.log('init!')
 
-  drawScatterplot();
+  drawAxes();
 }
 
 
-function drawScatterplot() {
-  console.log('drawScatterplot!');
+function drawAxes() {
+  console.log('drawAxes!');
+
+  var w = 600;
+  var h = 300;
+  var r = 5;
+  var padding = 25;
 
   var dataset = [
     [17, 50],
@@ -23,8 +28,30 @@ function drawScatterplot() {
     [350, 88]
   ];
 
-  var w = 550;
-  var h = 140;
+  var xScale =
+    d3.scaleLinear()
+      .domain([0, d3.max(dataset, function(d) {
+        return d[0];
+      })])
+      .range([padding, w - padding]);
+
+  var yScale =
+    d3.scaleLinear()
+      .domain([0, d3.max(dataset, function(d) {
+        return d[1];
+      })])
+      .range([h - padding, padding]);
+
+  var xAxis = d3
+                .axisBottom()
+                .scale(xScale)
+                .ticks(10);
+
+  var yAxis = d3
+                .axisLeft()
+                .scale(yScale)
+                .ticks(5);
+
   var svg = d3
               .select('body')
               .append('svg')
@@ -42,23 +69,17 @@ function drawScatterplot() {
     .attr('cy', function(d) {
       return d[1]
     })
-    .attr('r', 5);
+    .attr('r', r);
 
   svg
-    .selectAll('text')
-    .data(dataset)
-    .enter()
-    .append('text')
-    .text(function(d) {
-      return d[0] + ', ' + d[1];
-    })
-    .attr('x', function(d) {
-      return d[0];
-    })
-    .attr('y', function(d) {
-      return d[1] - 10;
-    })
-    .attr('text-anchor', 'middle')
-    .attr('font-family', 'sans-serif')
-    .attr('font-size', '0.75em');
+    .append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate(0,' + (h - padding) + ')')
+    .call(xAxis);
+
+  svg
+    .append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate(' + padding + ', 0)')
+    .call(yAxis);
 }
